@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Check_Next_Technical_Review_Is_Future</fullName>
+    <active>true</active>
+    <errorConditionFormula>Date_of_Next_Technical_Review__c &lt;   DATEVALUE(  NOW()  )</errorConditionFormula>
+    <errorMessage>NEXT TECHNICAL REVIEW MUST BE IN FUTURE</errorMessage>
+</ValidationRule>
