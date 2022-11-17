@@ -17,6 +17,7 @@ public with sharing class ContactTriggerProfitService {
             Account account= allAccounts.get(contact.accountId);       
             System.debug('preparingAccountsForUpdate s for reached');
             account.Wallet__c+=contact.LastGainedProfit__c;
+            account.Profits_Of_Contacts__c+=contact.LastGainedProfit__c;
             accountsForUpdate.add(account);
         }
         return accountsForUpdate;    
