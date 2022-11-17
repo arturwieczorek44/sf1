@@ -5,19 +5,15 @@ public with sharing class ContactTriggerGenderCheckService {
 
             if(checkLastChar(contact.FirstName)==true){
                 contact.Gender__c='female';
-
-                }else{
-                    
+            }else{
                 contact.Gender__c='male';
                 }
             System.Debug(contact.Gender__c);
         }
     }
     
-    
         public static Boolean checkLastChar(String firstName){
             String toCheck = firstName;
-        
             if(toCheck.substring(toCheck.length() - 1)=='a')
                 {
                 return true;

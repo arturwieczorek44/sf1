@@ -6,7 +6,7 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
 
     public override void afterUpdate(){
         
-        ContactTriggerUtility.afterUpdate(trigger.new,trigger.old);
+        ContactTriggerUtility.afterUpdate(trigger.new,(Map<ID, Contact>)trigger.oldMap);
       
     }
 }
