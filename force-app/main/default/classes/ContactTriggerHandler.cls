@@ -8,10 +8,5 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
         
         ContactTriggerUtility.afterUpdate(trigger.new,trigger.old);
       
-    
-
-
-
-
-}
+    }
 }

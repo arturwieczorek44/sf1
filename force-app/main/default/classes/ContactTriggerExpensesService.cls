@@ -25,7 +25,7 @@ public with sharing class ContactTriggerExpensesService {
                         if(account.NumberOfBoughtCars__c==0){
                             System.debug('Number of BoughtCars is 0 before trigger');
                              account.Wallet__c=account.Budget__c;
-                          }
+                        }
                         System.debug('preparingAccountsForUpdate s for reached');
                         account.Wallet__c-=contact.LastAddedExpenseValue__c;
                         account.NumberOfBoughtCars__c++;
