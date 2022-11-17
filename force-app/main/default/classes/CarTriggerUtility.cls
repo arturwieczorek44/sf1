@@ -12,8 +12,6 @@ public with sharing class CarTriggerUtility {
                     System.debug('Found Contact of Car');
                     contact.LastAddedExpenseValue__c= car.Price__c;
                     contact.Expenses__c+= car.Price__c;
-
-
                     listOfChangedContacts.add(contact);
                     }
             }
@@ -29,23 +27,37 @@ public with sharing class CarTriggerUtility {
 
 
     public static void beforeUpdate(List<Car__c> cars){
-    
-
-
-
-
-
 
     }
-
-
-
-
 
     public static void beforeDelete(List<Car__c> cars){
+        System.debug('Trying to delete car');
+        List<Contact> listOfChangedContacts= new List<Contact>();
+        List<Contact> contacts = new List<Contact>();
+        
+        contacts= [SELECT Id,Expenses__c,LastGainedProfit__c,Profit__c FROM Contact];
+System.debug('before running loops');
 
-
-
+        for(Car__c	 car: cars){
+            for(Contact contact: contacts){
+                if(car.Contact__c==contact.id){
+                    System.debug('Found Contact of Car');
+                    contact.LastGainedProfit__c= car.Value__c;
+                    contact.Profit__c	+= car.Value__c;
+                    listOfChangedContacts.add(contact);
+                    }
+            }
+        }
+    
+        update listOfChangedContacts;
+        System.debug('End CarTriggerUtility');
+    
 
     }
+
+
+
+
+
+    
 }

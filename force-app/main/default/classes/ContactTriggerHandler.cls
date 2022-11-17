@@ -6,7 +6,7 @@ public with sharing class ContactTriggerHandler extends TriggerHandler {
 
     public override void afterUpdate(){
         
-        ContactTriggerUtility.afterUpdateWhenBudgetMustBeChanged(trigger.new,trigger.old);
+        ContactTriggerUtility.afterUpdate(trigger.new,trigger.old);
       
     
 

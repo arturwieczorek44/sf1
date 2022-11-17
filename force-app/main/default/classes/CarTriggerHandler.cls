@@ -9,7 +9,7 @@ public with sharing class CarTriggerHandler extends TriggerHandler {
     }
 
      public override void beforeDelete(){
-        CarTriggerUtility.beforeDelete(trigger.new);
+        CarTriggerUtility.beforeDelete(trigger.old);
     }
 
 

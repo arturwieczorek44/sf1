@@ -1,41 +1,86 @@
 public with sharing class ContactTriggerUtility {
 
 
-    public static void afterUpdateWhenBudgetMustBeChanged(List<Contact> newTrigger,List<Contact> oldTrigger){
-System.debug('acccountcontact');
 
+    public static void afterUpdate(List<Contact> newTrigger,List<Contact> oldTrigger){
+        System.debug('ContactTriggerUtility main class reached');
+        
+        List<Account> allAccounts = [SELECT Id,Budget__c,Wallet__c,NumberOfBoughtCars__c FROM Account];
+        List<Account> accountsForUpdate=CheckingIsTheirExpensesChange(newTrigger,oldTrigger,allAccounts);
+        accountsForUpdate.addAll( CheckingIsTheirProfitChange(newTrigger,oldTrigger,allAccounts));
+        
+       
+        
+        update accountsForUpdate;
 
-
-       List<Account> allAccounts = [SELECT Id,Budget__c FROM Account];
-        List<Account> accountsForUpdate= new List<Account>();
-        List<Contact> contactForNextStep= new List<Contact>();
-System.debug('listanew'+newTrigger);
-System.debug('listaold'+oldTrigger);
-
+    }
+    public static List<Account> CheckingIsTheirProfitChange(List<Contact> newTrigger,List<Contact> oldTrigger,List<Account> allAccounts){
+        List<Contact> contactForNextStep=new List<Contact>();
         for(Contact contactNew:newTrigger){
             for(Contact contactOld:oldTrigger){
-                System.debug('1');
-                if(contactNew.Expenses__c!=contactOld.Expenses__c){
-                    System.debug('2');
-                    System.debug(contactNew.Expenses__c);
-                    System.debug(contactOld.Expenses__c);
-                    System.debug(contactNew.LastAddedExpenseValue__c);
-                    System.debug(contactNew.LastAddedExpenseValue__c);
-                    contactForNextStep.add(contactNew);
-                }
+            if(contactNew.Profit__c!=contactOld.Profit__c){
+                System.debug('CheckingIsTheirExpensesChange if reached');
+                contactForNextStep.add(contactNew);
             }
         }
-        
-
+      
+    }
+   return preparingAccountsForUpdateAfterProfitChange(allAccounts, contactForNextStep);
+}
+    public static List<Account> preparingAccountsForUpdateAfterProfitChange(List<Account> allAccounts,List<Contact> contactForNextStep){
+        System.debug('preparingAccountsForUpdate');
+        List<Account> accountsForUpdate=new List<Account>();
            for(Account account: allAccounts){
                 for(Contact contact:contactForNextStep){
                     if(contact.AccountId==account.id){
-                        account.Budget__c-=contact.LastAddedExpenseValue__c;
+                     
+                        System.debug('preparingAccountsForUpdate s for reached');
+                        account.Wallet__c+=contact.LastGainedProfit__c;
                         accountsForUpdate.add(account);
                     }
                 }
            }
-           update accountsForUpdate;
+           return accountsForUpdate;
+
+
+    }
+    
+
+    public static List<Account> CheckingIsTheirExpensesChange(List<Contact> newTrigger,List<Contact> oldTrigger,List<Account> allAccounts){
+        System.debug('CheckingIsTheirExpensesChange');
+        List<Contact> contactForNextStep=new List<Contact>();
+        for(Contact contactNew:newTrigger){
+            for(Contact contactOld:oldTrigger){
+
+                if(contactNew.Expenses__c!=contactOld.Expenses__c){
+                    System.debug('CheckingIsTheirExpensesChange if reached');
+                    contactForNextStep.add(contactNew);
+                }
+            }
+        }
+        return preparingAccountsForUpdateAfterExpensesChange(allAccounts, contactForNextStep);
+
+    }
+
+
+    public static List<Account> preparingAccountsForUpdateAfterExpensesChange(List<Account> allAccounts,List<Contact> contactForNextStep){
+        System.debug('preparingAccountsForUpdate');
+        List<Account> accountsForUpdate=new List<Account>();
+           for(Account account: allAccounts){
+                for(Contact contact:contactForNextStep){
+                    if(contact.AccountId==account.id){
+                        if(account.NumberOfBoughtCars__c==0){
+                            System.debug('Number of BoughtCars is 0 before trigger');
+                            account.Wallet__c=account.Budget__c;
+                        }
+                        System.debug('preparingAccountsForUpdate s for reached');
+                        account.Wallet__c-=contact.LastAddedExpenseValue__c;
+                        account.NumberOfBoughtCars__c++;
+                        accountsForUpdate.add(account);
+                    }
+                }
+           }
+           return accountsForUpdate;
             
     }   
   
@@ -46,14 +91,6 @@ System.debug('listaold'+oldTrigger);
     
     
         }
-
-
-
-
-
-
-
-
 
     public static void  detectGender(List<Contact> contacts){
 
