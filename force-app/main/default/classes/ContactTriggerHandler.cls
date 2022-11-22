@@ -1,6 +1,6 @@
 public with sharing class ContactTriggerHandler extends TriggerHandler {
     public override void beforeInsert(){
-        ContactTriggerUtility.CheckGender(trigger.new);
+        ContactTriggerUtility.checkGender(trigger.new);
       
     }
 
