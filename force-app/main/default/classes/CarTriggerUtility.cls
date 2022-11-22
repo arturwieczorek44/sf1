@@ -14,7 +14,7 @@ public with sharing class CarTriggerUtility {
 
     public static void updatingContactExpenses(List<Car__c> cars){
         System.debug('utilitydebug');
-      List<Contact> contactsToUpdate = new List<Contact>();
+        List<Contact> contactsToUpdate = new List<Contact>();
 
         Set<Id> contactIds = new Set<Id>();
         for(Car__c car: cars) {
@@ -22,7 +22,6 @@ public with sharing class CarTriggerUtility {
         }
 
         List<Contact> contactsWithCars = [SELECT Id, Expenses__c, (SELECT Id, Price__c FROM Cars__r) FROM Contact WHERE Id IN :contactIds];
-        System.debug('cwc: ' + contactsWithCars);
         for(Contact contactTemp : contactsWithCars) {
             Double newContactExpenses = 0;
             for(Car__c carTemp : contactTemp.Cars__r) {
@@ -36,9 +35,9 @@ public with sharing class CarTriggerUtility {
                 contactsToUpdate.add(contactTemp);
                 }
         }
-        if(!contactsToUpdate.isEmpty()) {
+        if(!contactsToUpdate.isEmpty()){
             update contactsToUpdate;
-            }
+        }
 
      
         System.debug('End CarTriggerUtility');

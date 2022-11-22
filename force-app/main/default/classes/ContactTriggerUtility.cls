@@ -6,21 +6,13 @@ public with sharing class ContactTriggerUtility {
     public static void updateAccountWhenContactChanged(Map<ID, Contact> newTrigger, Map<ID, Contact> oldTrigger){
         System.debug('ContactTriggerUtility main class reached');
         Set<Id> accountIds = new Set<Id>();
-            for(Contact contact: newTrigger.values()){
-                accountIds.add(contact.AccountId);
-            }
+        for(Contact contact: newTrigger.values()){
+            accountIds.add(contact.AccountId);
+        }
 
-        
-            Map<Id, Account> accountsMap = new Map<Id,Account>([SELECT Id FROM account  WHERE Id IN: accountIds]);
-             //Map<Id, Account> accountsMap = new Map<Id,Account>([select id from account where ...]);
-
-            Map<ID, Contact> contactsPreparedForChange=CheckingIsTheirExpensesChange(newTrigger,oldTrigger);
-
+        Map<Id, Account> accountsMap = new Map<Id,Account>([SELECT Id FROM account  WHERE Id IN: accountIds]);
+        Map<ID, Contact> contactsPreparedForChange=CheckingIsTheirExpensesChange(newTrigger,oldTrigger);
         List<Account> accountsForUpdate=  preparingAccountsForUpdateAfterExpensesChange(accountsMap,contactsPreparedForChange);
-
-
-
-       // accountsForUpdate.addAll(ContactTriggerProfitService.CheckingIsTheirProfitChange(newTrigger,oldTrigger,accountsMap));
         update accountsForUpdate;
     }
 
@@ -28,6 +20,7 @@ public with sharing class ContactTriggerUtility {
     public static  Map<ID, Contact> CheckingIsTheirExpensesChange(Map<ID, Contact> newTrigger,Map<ID, Contact> oldTrigger){
         System.debug('CheckingIsTheirExpensesChange');
         Map<ID, Contact> contactForNextStep=new Map<ID, Contact>();
+
         for(Contact contactNew:newTrigger.values()){
            if(contactNew.Expenses__c!=oldTrigger.get(contactNew.id).Expenses__c){
                System.debug('CheckingIsTheirExpensesChange if reached');
@@ -37,11 +30,6 @@ public with sharing class ContactTriggerUtility {
        return contactForNextStep;
    
    }
-   // //musisz zebrać Id accountów z CONTACTÓW które wpadły w trigger,
-//  zapytać baze o Accounty i ich Contacty w jednej querzy po relacji tak jak zrobiłem to wcześniej z Contactami i Carami w komentarzu
-//  i wtedy sie przepętlić i obliczyć to dodająć expense i uzupełnić pole wtedy dopiero,
-//   pod tytułem Wallet, które będzie budżet - kwota która wyjdzie Ci z obliczeń
-   
    
    public static List<Account> preparingAccountsForUpdateAfterExpensesChange(Map<ID, Account> accounts,     Map<ID, Contact> contactForNextStep){
         List<Account> accountsWithContacts = [SELECT Id,Budget__c,Wallet__c,(SELECT Id, Expenses__c FROM Contacts)FROM Account WHERE Id IN :accounts.keySet()];
@@ -51,11 +39,12 @@ public with sharing class ContactTriggerUtility {
            System.debug('budget: ' + accountTemp.Budget__c);
            accountTemp.Wallet__c = accountTemp.Budget__c;
            System.debug('budget: ' + accountTemp.Wallet__c);
-               for(Contact contactTemp : accountTemp.Contacts){
+
+            for(Contact contactTemp : accountTemp.Contacts){
                    accountTemp.Wallet__c -= contactTemp.Expenses__c;
                    System.debug(contactTemp.Expenses__c);
-               }   
-           accountsForUpdate.add(accountTemp);
+            }   
+            accountsForUpdate.add(accountTemp);
        }
 
        return accountsForUpdate;  
@@ -81,7 +70,7 @@ public with sharing class ContactTriggerUtility {
             if(toCheck.substring(toCheck.length() - 1) == 'a')
                 {
                 return true;
-                }else{
+            }else{
                 return false;
                 }
         }
