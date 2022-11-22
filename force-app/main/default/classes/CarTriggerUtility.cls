@@ -8,7 +8,6 @@ public with sharing class CarTriggerUtility {
             }
         }
         updatingContactExpenses(carsWithChangedPrice);
-
     }
 
 
@@ -23,12 +22,12 @@ public with sharing class CarTriggerUtility {
         }
 
         List<Contact> contactsWithCars = [SELECT Id, Expenses__c, (SELECT Id, Price__c FROM Cars__r) FROM Contact WHERE Id IN :contactIds];
-System.debug('cwc: '+contactsWithCars);
+        System.debug('cwc: ' + contactsWithCars);
         for(Contact contactTemp : contactsWithCars) {
             Double newContactExpenses = 0;
             for(Car__c carTemp : contactTemp.Cars__r) {
-                System.debug('car expenses: '+ carTemp.Price__c );
-                System.debug('newContactExpenses: '+ carTemp.Price__c );
+                System.debug('car expenses: ' + carTemp.Price__c );
+                System.debug('newContactExpenses: ' + carTemp.Price__c );
                 newContactExpenses += carTemp.Price__c;
             }
 
@@ -43,8 +42,6 @@ System.debug('cwc: '+contactsWithCars);
 
      
         System.debug('End CarTriggerUtility');
-    
-
     }
     
     public static void gainingProfitAfterSelling(List<Car__c> cars){
@@ -69,15 +66,5 @@ System.debug('cwc: '+contactsWithCars);
 //         update listOfChangedContacts;
 //         System.debug('End CarTriggerUtility');
     
-
-    }
-
-
-      
-
-
-
-
-
-     
+    }     
 }
