@@ -3,7 +3,10 @@
         </lightning-record-view-form>
     <h2> Car Datatable</h2>
     <template if:true={cars}>
-        <lightning-datatable data={cars} columns={columns} key-field="Name">
+        <lightning-datatable
+            data={cars}
+            columns={columns}
+            key-field="Name">
         </lightning-datatable>
     </template>
     <template if:true={error}>

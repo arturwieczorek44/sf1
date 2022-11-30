@@ -34,10 +34,10 @@ export default class LightningDatatableLWCExample extends LightningElement {
     }
      
     loadCars(){
-    getCarList({recordId : this.recordId})
-        .then(result => { console.log('record:'+ this.recordId)
-        this.cars = result;
-         })
+        getCarList({recordId : this.recordId})
+            .then(result => { console.log('record:'+ this.recordId)
+            this.cars = result;
+            })
             .catch(error => {
                 this.cars = error;
             });

@@ -10,7 +10,7 @@ public with sharing class CarController {
             FROM Car__c
             WHERE Contact__r.AccountId = :recordId
             
-            ];
+        ];
     }
 ///////////
 }
