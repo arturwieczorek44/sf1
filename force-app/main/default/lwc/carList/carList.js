@@ -18,12 +18,6 @@ export default class LightningDatatableLWCExample extends LightningElement {
             fieldName: 'Price__c',
             type: 'Currency',
             sortable: true
-        },
-        {
-            label: 'Contact',
-            fieldName: 'Contact__r.Name',
-            type: 'text',
-            sortable: true
         }
     ];
     @api recordId;

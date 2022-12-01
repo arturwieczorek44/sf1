@@ -6,7 +6,7 @@ public with sharing class CarController {
 
         return [    
 
-            SELECT Name, Value__c, Price__c,Contact__r.Name
+            SELECT Name, Value__c, Price__c
             FROM Car__c
             WHERE Contact__r.AccountId = :recordId
             
