@@ -1,0 +1,13 @@
+<!-- apexImperativeMethod.html -->
+<template>
+    <lightning-card title="Get Json" icon-name="custom:custom63">
+        <div class="slds-m-around_medium">
+            <p class="slds-m-bottom_small">
+                <lightning-button label="Get Json" onclick={handleLoad}></lightning-button>
+            </p>
+            <template if:true={cars}>
+                <p><lightning-formatted-text value={cars}></lightning-formatted-text></p>
+            </template>
+        </div>
+    </lightning-card>
+</template>
