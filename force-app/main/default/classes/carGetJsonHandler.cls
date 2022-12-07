@@ -1,40 +1,27 @@
 public class carGetJsonHandler {
-	//public static List<wrapperCls> result{get;set;}
+  
     
-//     public static dt_tracker(){
-//     String recordstring = getJsonFromHttp();
-//     result = (List<wrapperCls>) JSON.deserialize(recordstring, List<wrapperCls>.class);
-//     }
-//     class wrapperCls {
-//     public string Id {get;set;}
-//     public string car {get;set;}
-//     public string car_color_model {get;set;}
-//     public string car_model_year {get;set;}
-//     public string car_vin {get;set;}
-//     public string price {get;set;}
-//     public string availability {get;set;}
-// }
+    List<CarsWrapper.Cars> carsFromJson= new List<CarsWrapper.Cars>();
+
     @AuraEnabled(cacheable =true)
-    public static string getJsonHandler() {
-        HttpRequest request = new HttpRequest();
-        request.setEndPoint('https://myfakeapi.com/api/cars/');
-        request.setHeader('Contetnt-Type', 'application/json');
-        String endPoint = request.getEndPoint();
-        System.debug(endpoint); //http://www.salesforcekid.com
-        request.setMethod('GET');
-        Http http = new http();
-        HttpResponse send = http.send(request);
-        String response =  send.getStatus();
-        System.debug('respone: '+response);
-         return response;
-        
+    public static List<CarsWrapper.Cars>  getJsonHandler() {
+        System.debug('12345');
+        List<CarsWrapper.Cars> carsFromJson= new List<CarsWrapper.Cars>();
+        Http httpCallout = new Http();
+        HttpRequest req= new HttpRequest();
+        req.setEndpoint('https://myfakeapi.com/api/cars');
+        req.setMethod('GET');
+        HttpResponse response = httpCallout.send(req);
+        CarsWrapper carApi = CarsWrapper.parse(response.getBody());
+        carsFromJson=carApi.cars;
+        System.debug(carsFromJson);
+        List<CarsWrapper.Cars> carsForDisplay = new List<CarsWrapper.Cars>();
+        for(integer i=0;i<15;i++){
+            carsForDisplay.add(carsFromJson.get(i));
+
+        }
+        return carsForDisplay;
     }
-    //public string Id {get;set;}
-    // public string car {get;set;}
-    // public string car_color_model {get;set;}
-    // public string car_model_year {get;set;}
-    // public string car_vin {get;set;}
-    // public string price {get;set;}
-    // public string availability {get;set;}
+    
 
 }

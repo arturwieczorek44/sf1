@@ -1,5 +1,5 @@
 @RestResource(urlMapping='/cars/*')
-global class CarService {
+ global class CarService {
     @HttpGet
     global static List<Car__c> getCars(){
     //create a new instance for product object

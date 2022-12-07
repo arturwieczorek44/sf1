@@ -5,8 +5,12 @@
             <p class="slds-m-bottom_small">
                 <lightning-button label="Get Json" onclick={handleLoad}></lightning-button>
             </p>
-            <template if:true={cars}>
-                <p><lightning-formatted-text value={cars}></lightning-formatted-text></p>
+            <template if:true={data}>
+                <lightning-datatable
+                key-field="id"
+                data={data}
+                columns={columns}>
+        </lightning-datatable>
             </template>
         </div>
     </lightning-card>
